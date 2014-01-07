@@ -1,0 +1,17 @@
+{% extends "layout.jinja2" %}
+{% block content %}
+<ul class="nav nav-pills pull-right">
+    {% if request.has_permission('edit', image) %}
+    <li><a href="{{ request.route_url('edit', image) }}">Edit</a></li>
+    {% endif %}
+    {% if request.has_permission('delete', image) %}
+    <li><a href="{{ request.route_url('delete', image) }}">Delete</a></li>
+    {% endif %}
+</ul>
+<h2>{{ image.title }}</h2>
+<div class="thumbnail col-md-4">
+<a target="_blank" href="{{ request.storage.url(image.image) }}">
+    <img src="{{ request.storage.url(image.thumbnail) }}">
+</a>
+</div>
+{% endblock %}

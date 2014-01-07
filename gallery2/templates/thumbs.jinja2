@@ -1,0 +1,16 @@
+{% extends "layout.jinja2" %}
+{% from "macros/navigate.jinja2" import pagination_links %}
+{% block content %}
+{% set page = request.paginate(images) %}
+<div class="row">
+{% for image in page.items %}
+<div class="col-xs-3">
+<a class="thumbnail" title="{{ image.title }}" href="{{ request.route_url('detail', image) }}">
+    <img src="{{ request.storage.url(image.thumbnail) }}" alt="{{ image.title }}">
+</a>
+</div>
+{% endfor %}
+</div>
+{{ pagination_links(page) }}
+<div class="text-center"><small>{{ _("Images:") }} {{ page.item_count }}</small></div>
+{% endblock %}

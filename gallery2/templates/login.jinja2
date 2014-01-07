@@ -1,0 +1,9 @@
+{% extends "layout.jinja2" %}
+{% from "macros/forms.jinja2" import render_form %}
+
+{% set active_tab="login" %}
+
+{% block content %}
+{{ render_form(form) }}
+{% endblock %}
+

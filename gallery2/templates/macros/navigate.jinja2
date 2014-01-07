@@ -1,0 +1,38 @@
+{% macro pagination_links(page) %}
+{% if page.page_count > 1 %}
+<ul class="pagination">
+    {% if page.previous_page %}
+    <li><a href="{{ page.url_maker(page.first_page) }}">&laquo;&laquo;</a></li>
+    <li><a href="{{ page.url_maker(page.previous_page) }}">&laquo;</a></li>
+    {% else %}
+    <li class="disabled"><a href="#">&laquo;&laquo;</a></li>
+    <li class="disabled"><a href="#">&laquo;</a></li>
+    {% endif %}
+    {% for curpage in page.window %}
+    <li{% if curpage == page.page %} class="active"{% endif %}><a href="{{ page.url_maker(curpage) }}">{{ curpage }}</a></li>
+    {% endfor %}
+    {% if page.next_page %}
+    <li><a href="{{ page.url_maker(page.next_page) }}">&raquo;</a></li>
+    <li><a href="{{ page.url_maker(page.last_page) }}">&raquo;&raquo;</a></li>
+    {% else %}
+    <li class="disabled"><a href="#">&raquo;</a></li>
+    <li class="disabled"><a href="#">&raquo;&raquo;</a></li>
+    {% endif %}
+</ul>
+{% endif %}
+{% endmacro %}
+
+
+{% macro breadcrumbs() %}
+<ul class="breadcrumb">
+    {% for item in varargs %}
+    <li{% if loop.last %} class="active"{% endif %}>
+    {% if item is string %}
+    {{ item }}
+    {% else %}
+    <a href="{{ item[0] }}">{{ item[1] }}</a>
+    {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
