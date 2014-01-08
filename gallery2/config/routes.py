@@ -23,6 +23,8 @@ def add_routes(config):
     config.add_route('search', '/search')
     config.add_route('upload', '/upload')
 
+    config.add_model_route(models.User, 'profile', '/profile/{id}/{slug}')
+
     with config.model_route_defaults(models.Image) as r:
         r('detail', '/images/{id}')
         r('edit', '/images/{id}/edit')

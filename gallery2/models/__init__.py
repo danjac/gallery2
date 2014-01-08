@@ -68,6 +68,10 @@ class User(Base):
     def __str__(self):
         return self.username
 
+    @property
+    def __acl__(self):
+        return [(Allow, Everyone, "view")]
+
     @hybrid_property
     def password(self):
         return self.encrypted_password

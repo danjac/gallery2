@@ -1,6 +1,7 @@
 from sqlalchemy import engine_from_config
 
-from ..models.base import DBSession, Base, Page
+from ..models.base import DBSession, Base
+from ..lib.pagination import Page
 
 
 def paginate(request, *args, **kwargs):

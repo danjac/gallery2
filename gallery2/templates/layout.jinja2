@@ -50,6 +50,7 @@
           </ul>
           <ul class="nav navbar-nav pull-right">
             {% if request.user %}
+            <li><a href="{{ 'profile'|route_url(request.user, slug=request.user.username) }}">{{ request.user.username }}</a></li>
             <li><a href="{{ 'logout'|route_url }}">Logout</a></li>
             {% else %}
             <li{% if active_tab=='login' %} class="active"{% endif %}><a href="{{ 'login'|route_url }}">Login</a></li>

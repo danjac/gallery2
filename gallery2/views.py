@@ -13,6 +13,15 @@ def home(request):
     return {'images': images}
 
 
+@view_config(route_name='profile',
+             renderer='thumbs.jinja2')
+def profile(user, request):
+    images = models.Image.query.filter_by(user=user).order_by(
+        models.Image.created_at.desc(),
+    )
+    return {'images': images}
+
+
 @view_config(route_name='upload',
              permission='upload',
              renderer='upload.jinja2')
