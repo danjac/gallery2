@@ -28,7 +28,7 @@ jinja2.filters =
     route_url = pyramid_jinja2.filters:route_url_filter
     static_url = pyramid_jinja2.filters:static_url_filter
 
-sqlalchemy.url = postgresql://postgres:m0nk3Y@localhost/gallery2
+sqlalchemy.url = postgresql://postgres:*****@localhost/gallery2
 
 # Assets
 
