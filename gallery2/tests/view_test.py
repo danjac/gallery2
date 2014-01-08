@@ -9,20 +9,20 @@ def test_home(db):
 
 
 def test_logout():
-    from ..views import logout
+    from ..views.auth import logout
     res = logout(make_request())
     assert res.route_name == 'home'
 
 
 def test_login_get():
-    from ..views import login
+    from ..views.auth import login
     with testing.testConfig() as config:
         config.add_route("login", "/login")
         assert 'form' in login(make_request(route_name='login'))
 
 
 def test_login_post_invalid(db):
-    from ..views import login
+    from ..views.auth import login
     data = {
         'email': 'test@gmail.com',
         'password': 'test',
@@ -38,7 +38,7 @@ def test_login_post_invalid(db):
 
 
 def test_login_post_valid(db):
-    from ..views import login
+    from ..views.auth import login
     from .factories import UserFactory
     UserFactory()
     data = {
@@ -56,7 +56,7 @@ def test_login_post_valid(db):
 
 
 def test_signup_get():
-    from ..views import signup
+    from ..views.auth import signup
     with testing.testConfig() as config:
         config.add_route('signup', '/signup')
         assert 'form' in signup(make_request(route_name='signup'))
@@ -64,7 +64,7 @@ def test_signup_get():
 
 def test_signup_post(db):
     from ..models import User
-    from ..views import signup
+    from ..views.auth import signup
     with testing.testConfig() as config:
         config.add_route('signup', '/signup')
         req = make_request('POST', post_data={
