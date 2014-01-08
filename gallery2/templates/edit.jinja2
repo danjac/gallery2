@@ -3,13 +3,13 @@
 {% from "macros/forms.jinja2" import render_form %}
 
 {% block content %}
-{{ breadcrumbs((request.route_url('detail', image), image.title), 'Edit') }}
+{{ breadcrumbs(( 'detail'|route_url(image), image.title), 'Edit') }}
 <div class="row">
 <div class="col-md-6">
 {{ render_form(form) }}
 </div>
 <div class="col-md-6">
-    <img class="img-portrait" src="{{ request.storage.url(image.thumbnail) }}">
+    <img class="img-portrait" src="{{ image.thumbnail|storage_url }}">
 </div>
 </div>
 {% endblock %}
