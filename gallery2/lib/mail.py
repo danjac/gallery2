@@ -5,8 +5,8 @@ from pyramid_mailer.message import Message
 
 
 def get_rendered_mail(request, subject, recipients, sender=None,
-                      context=None, renderer=None, text_renderer=None, 
-                      html_renderer=None, 
+                      context=None, renderer=None, text_renderer=None,
+                      html_renderer=None,
                       **kwargs):
 
     context = context or {}
@@ -18,8 +18,8 @@ def get_rendered_mail(request, subject, recipients, sender=None,
     if not text_renderer:
         raise ValueError("text_renderer required")
 
-    message = Message(subject=subject, 
-                      recipients=recipients, 
+    message = Message(subject=subject,
+                      recipients=recipients,
                       sender=sender)
     message.body = render(text_renderer, context, request)
 
@@ -30,4 +30,5 @@ def get_rendered_mail(request, subject, recipients, sender=None,
 
 
 def send_rendered_mail(request, *args, **kwargs):
-    return get_mailer(request).send(get_rendered_mail(request, *args, **kwargs))
+    return get_mailer(request).send(
+        get_rendered_mail(request, *args, **kwargs))

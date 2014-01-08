@@ -37,12 +37,13 @@ def upload(request):
 @view_config(route_name='search',
              renderer='thumbs.jinja2')
 def search(request):
-    q = request.params.get('q', None)
-    if q is None:
+    q = request.params.get('q', '').strip()
+    if not q:
         return {'images': []}
+    q = '%' + q + '%'
     images = models.Image.query.filter(
-        models.Image.title.ilike('%' + q + '%')).order_by(
-        models.Image.created_at.desc())
+        models.Image.title.ilike(q)
+        ).order_by(models.Image.created_at.desc())
     return {'images': images}
 
 
@@ -50,6 +51,30 @@ def search(request):
              renderer='detail.jinja2')
 def detail(image, request):
     return {'image': image}
+
+
+@view_config(route_name='edit',
+             renderer='edit.jinja2',
+             permission='edit')
+def edit(image, request):
+    form = forms.EditForm(request, obj=image)
+    if form.handle():
+        image.title = form.title.data
+        request.session.flash(
+            request.localizer.translate(
+                _('Your image has been updated')), 'success')
+        return request.seeother('detail', image)
+    return {'image': image, 'form': form}
+
+
+@view_config(route_name='delete',
+             permission='delete')
+def delete(image, request):
+    request.db.delete(image)
+    request.session.flash(
+        request.localizer.translate(
+            _('Your image has been deleted')), 'danger')
+    return request.seeother('home')
 
 
 @forbidden_view_config(renderer='login.jinja2')
@@ -115,14 +140,14 @@ def forgot_password(request):
 
     form = forms.ForgotPasswordForm(request)
     if form.handle():
-        user = models.User.query.filter_by(email=form.email.data).first()
+        user = models.User.query.identify(form.identifier.data)
         if user:
             user.renew_verification_code()
             request.session.flash(
                 request.localizer.translate(
                     _('Check your email for your verification code')),
                 'success')
-            mailers.forgot_password(request, user)
+            request.mailer.send(mailers.forgot_password(request, user))
             return request.seeother('home')
         form.email.errors.append('No user found for this address')
     return {'form': form}

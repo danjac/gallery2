@@ -6,19 +6,19 @@ from babel import dates, numbers
 
 @jinja2.contextfilter
 def format_date(context, value, format='medium'):
-    return dates.format_date(value, format, 
+    return dates.format_date(value, format,
                              locale=context['request'].locale)
 
 
 @jinja2.contextfilter
 def format_time(context, value, format='medium'):
-    return dates.format_time(value, format, 
+    return dates.format_time(value, format,
                              locale=context['request'].locale)
 
 
 @jinja2.contextfilter
 def format_datetime(context, value, format='medium'):
-    return dates.format_datetime(value, format, 
+    return dates.format_datetime(value, format,
                                  locale=context['request'].locale)
 
 
@@ -35,8 +35,23 @@ def format_number(context, value):
 
 @jinja2.contextfilter
 def format_decimal(context, value, format=None):
-    return numbers.format_decimal(value, format=None, 
+    return numbers.format_decimal(value, format=None,
                                   locale=context['request'].locale)
+
+
+@jinja2.contextfilter
+def storage_url(context, value):
+    return context['request'].storage.url(value)
+
+
+@jinja2.contextfilter
+def has_permission(context, permission, *args):
+    return context['request'].has_permission(permission, *args)
+
+
+@jinja2.contextfilter
+def paginate(context, collection, **kwargs):
+    return context['request'].paginate(collection, **kwargs)
 
 
 @jinja2.contextfilter

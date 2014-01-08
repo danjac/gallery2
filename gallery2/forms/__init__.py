@@ -21,6 +21,12 @@ from .base import SecureForm
 from .validators import FileRequired
 
 
+class EditForm(SecureForm):
+
+    title = StringField(_("Title"), [DataRequired()])
+    submit = SubmitField(_("Save"))
+
+
 class UploadForm(SecureForm):
 
     title = StringField(_("Title"), [DataRequired()])

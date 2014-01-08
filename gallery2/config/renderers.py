@@ -15,10 +15,12 @@ def includeme(config):
 
     env.filters['plural'] = plural
     env.filters['jsonify'] = filters.jsonify
+    env.filters['storage_url'] = filters.storage_url
+    env.filters['has_permission'] = filters.has_permission
+    env.filters['paginate'] = filters.paginate
     env.filters['format_date'] = filters.format_date
     env.filters['format_time'] = filters.format_time
     env.filters['format_datetime'] = filters.format_datetime
     env.filters['format_currency'] = filters.format_currency
     env.filters['format_decimal'] = filters.format_decimal
     env.filters['format_number'] = filters.format_number
-

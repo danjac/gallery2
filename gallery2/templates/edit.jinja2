@@ -1,0 +1,16 @@
+{% extends "layout.jinja2" %}
+{% from "macros/navigate.jinja2" import breadcrumbs %}
+{% from "macros/forms.jinja2" import render_form %}
+
+{% block content %}
+{{ breadcrumbs((request.route_url('detail', image), image.title), 'Edit') }}
+<div class="row">
+<div class="col-md-6">
+{{ render_form(form) }}
+</div>
+<div class="col-md-6">
+    <img class="img-portrait" src="{{ request.storage.url(image.thumbnail) }}">
+</div>
+</div>
+{% endblock %}
+

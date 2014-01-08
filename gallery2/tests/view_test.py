@@ -5,7 +5,7 @@ from ..lib.testing import make_request
 
 def test_home(db):
     from ..views import home
-    assert home(make_request()) == {}
+    assert 'images' in home(make_request())
 
 
 def test_logout():

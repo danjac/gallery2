@@ -1,6 +1,8 @@
+import os
 import hashlib
 import random
 import string
+import datetime
 import StringIO
 import PIL
 
@@ -61,6 +63,7 @@ class User(Base):
     encrypted_password = Column('password', String(60))
     is_admin = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
+    verification_code = Column(String(60), unique=True)
 
     def __str__(self):
         return self.username
@@ -92,7 +95,7 @@ class Image(Base):
 
     __tablename__ = 'images'
 
-    title = Column(Unicode(100), nullable=False)
+    title = Column(Unicode(100), index=True, nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     original_filename = Column(Unicode(200), nullable=False)
     image = Column(String(200), nullable=False)
@@ -111,20 +114,33 @@ class Image(Base):
         ]
 
     def store_image(self, filename, file, storage):
+
         self.original_filename = filename
+
+        today = datetime.date.today()
+
+        date_prefix = os.path.join(
+            str(today.year),
+            str(today.month),
+            str(today.day),
+        )
+
         self.image = storage.save_file(
             file, filename,
-            folder='images',
+            folder=os.path.join('images', date_prefix),
             randomize=True)
+
         output = StringIO()
         file.seek(0)
         img = PIL.Image.open(file)
+
         if img.mode not in ('L', 'RGB'):
             img = img.convert('RGB')
         fit = ImageOps.fit(
             img, self.THUMBNAIL_SIZE, PIL.Image.ANTIALIAS)
         fit.save(output, 'JPEG', quality=100)
+
         self.thumbnail = storage.save_file(
             output, 'output.jpg',
-            folder='thumbs',
+            folder=os.path.join('thumbs', date_prefix),
             randomize=True)
