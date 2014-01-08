@@ -26,6 +26,7 @@ from sqlalchemy import (
 
 
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.hybrid import hybrid_property
 
 
@@ -58,12 +59,12 @@ class User(Base):
 
     __tablename__ = 'users'
 
-    username = Column(Unicode(60), unique=True)
-    email = Column(String(180), unique=True)
+    username = Column(Unicode(60), unique=True, index=True)
+    email = Column(String(180), unique=True, index=True)
     encrypted_password = Column('password', String(60))
     is_admin = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
-    verification_code = Column(String(60), unique=True)
+    verification_code = Column(String(60), unique=True, index=True)
 
     def __str__(self):
         return self.username
@@ -99,7 +100,7 @@ class Image(Base):
 
     __tablename__ = 'images'
 
-    title = Column(Unicode(100), index=True, nullable=False)
+    title = Column(Unicode(100), nullable=False, index=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     original_filename = Column(Unicode(200), nullable=False)
     image = Column(String(200), nullable=False)
@@ -116,6 +117,10 @@ class Image(Base):
             (Allow, Everyone, "view"),
             (Allow, "user:%d" % self.user_id, ALL_PERMISSIONS),
         ]
+
+    @declared_attr
+    def __mapper_args__(cls):
+        return {'order_by': cls.__table__.c.created_at.desc()}
 
     def store_image(self, filename, file, storage):
 

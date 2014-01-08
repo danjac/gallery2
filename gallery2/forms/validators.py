@@ -1,6 +1,6 @@
 from wtforms import ValidationError
 
-from ..config.i18n import _
+from ..i18n import _
 
 
 class FileRequired(object):

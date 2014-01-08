@@ -4,10 +4,10 @@ from webob.multidict import MultiDict
 from wtforms import Form as BaseForm
 from wtforms.csrf.core import CSRF as BaseCSRF
 
-from ..config.i18n import _
+from ..i18n import _
 
 
-class Form(BaseForm): 
+class Form(BaseForm):
     def __init__(self, request, *args, **kwargs):
 
         self.request = request
@@ -18,14 +18,14 @@ class Form(BaseForm):
         locales = [get_locale_name(request)]
 
         super(Form, self).__init__(
-            params, 
-            meta={'locales': locales}, 
+            params,
+            meta={'locales': locales},
             *args, **kwargs)
 
     @classmethod
     def from_json(cls, request, *args, **kwargs):
-        return cls(request, 
-                   params=MultiDict(request.json_body), 
+        return cls(request,
+                   params=MultiDict(request.json_body),
                    *args, **kwargs)
 
     def handle(self):

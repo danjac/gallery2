@@ -1,8 +1,6 @@
-from pyramid.i18n import TranslationStringFactory, get_locale_name
+from pyramid.i18n import get_locale_name
 
 from babel.core import Locale
-
-_ = TranslationStringFactory('gallery2')
 
 
 def get_locale(request):

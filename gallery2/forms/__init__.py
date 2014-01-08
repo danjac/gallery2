@@ -16,7 +16,7 @@ from wtforms.validators import (
 from wtforms_alchemy import Unique
 
 from ..models import User
-from ..config.i18n import _
+from ..i18n import _
 from .base import SecureForm
 from .validators import FileRequired
 
