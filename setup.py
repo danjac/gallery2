@@ -17,6 +17,7 @@ requires = [
     'pyramid_exclog',
     'pyramid_webassets',
     'pyramid_storage',
+    'pyramid_redis_sessions',
     'Pillow',
     'SQLAlchemy',
     'alembic',

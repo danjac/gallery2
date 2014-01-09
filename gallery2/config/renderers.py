@@ -1,6 +1,8 @@
 from webhelpers2.text import plural
 
 from ..lib import filters
+from ..lib.extensions import FragmentCacheExtension
+from ..caching import region
 
 
 def includeme(config):
@@ -24,3 +26,6 @@ def includeme(config):
     env.filters['format_currency'] = filters.format_currency
     env.filters['format_decimal'] = filters.format_decimal
     env.filters['format_number'] = filters.format_number
+
+    env.add_extension(FragmentCacheExtension)
+    env.fragment_cache = region

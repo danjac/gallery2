@@ -1,4 +1,6 @@
 from pyramid import testing
+from pyramid.paster import get_app
+from webtest import TestApp
 from sqlalchemy import create_engine
 
 
@@ -24,3 +26,10 @@ def pytest_funcarg__db(request):
     request.addfinalizer(lambda: DBSession.remove())
 
     return engine
+
+
+def pytest_funcarg__app(request):
+
+    from .. import main
+    app = get_app('test.ini')
+    return TestApp(app)

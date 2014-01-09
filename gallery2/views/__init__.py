@@ -1,4 +1,5 @@
 from pyramid.view import view_config
+from sqlalchemy import func
 
 from ..i18n import _
 from .. import forms, models
@@ -31,10 +32,11 @@ def upload(request):
             request.storage,
         )
         request.db.add(image)
+        request.db.flush()
         request.session.flash(
             request.localizer.translate(
                 _('Your image has been uploaded')), 'success')
-        return request.seeother('home')
+        return request.seeother('detail', image)
     return {'form': form}
 
 

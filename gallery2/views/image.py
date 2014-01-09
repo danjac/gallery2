@@ -28,6 +28,8 @@ def edit(image, request):
              permission='delete')
 def delete(image, request):
     request.db.delete(image)
+    request.storage.delete(image.image)
+    request.storage.delete(image.thumbnail)
     request.session.flash(
         request.localizer.translate(
             _('Your image has been deleted')), 'danger')
