@@ -1,8 +1,7 @@
 'use strict';
 
 $(function () {
-    var tags = [],
-        thumbnails = $('.thumbnail');
+    var thumbnails = $('.thumbnail');
 
     thumbnails.hide();
     // check all thumbs, if 404 then remove
@@ -16,33 +15,23 @@ $(function () {
                 $el.show();
             })
             .fail(function () {
-                console.log("REMOVING " + img.attr('src'));
                 $el.remove();
             });
     });
 
     $('input.tags').autocomplete({
         source: function (request, response) {
-            if (tags.length > 0) {
-                response($.map(tag, function (tag) {
+            $.get('/tags', function (data) {
+                response($.map(data.tags, function (item) {
+                    var tag = {
+                        label: item,
+                        value: item
+                    };
                     if (tag.value.search(request.term) !== -1) {
                         return tag;
                     }
                 }));
-            } else {
-                $.get('/tags', function (data) {
-                    response($.map(data.tags, function (item) {
-                        var tag = {
-                            label: item,
-                            value: item
-                        };
-                        tags.push(tag);
-                        if (tag.value.search(request.term) !== -1) {
-                            return tag;
-                        }
-                    }));
-                });
-            }
+            });
         },
         select: function (event, ui) {
             var url = "/search?q=" + ui.item.value;
