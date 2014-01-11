@@ -1,16 +1,24 @@
 'use strict';
 
 $(function () {
-    var tags = [];
+    var tags = [],
+        thumbnails = $('.thumbnail');
 
+    thumbnails.hide();
     // check all thumbs, if 404 then remove
-    $.each($('.thumbnail'), function (index, el) {
+    $.each(thumbnails, function (index, el) {
         var $el = $(el),
-            img = $el.find('img');
-        $.get(img.attr('src')).fail(function () {
-            console.log("REMOVING " + img.attr('src'));
-            $el.remove();
-        });
+            img = $el.find('img'),
+            src = img.attr('data-src');
+        $.get(src)
+            .success(function () {
+                img.attr('src', src);
+                $el.show();
+            })
+            .fail(function () {
+                console.log("REMOVING " + img.attr('src'));
+                $el.remove();
+            });
     });
 
     $('input.tags').autocomplete({

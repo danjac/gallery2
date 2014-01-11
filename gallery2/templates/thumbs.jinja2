@@ -7,7 +7,7 @@
 {% for image in page.items %}
 <div class="col-xs-3">
 <a class="thumbnail" title="{{ image.title }}" href="{{ 'detail'|route_url(image) }}">
-    <img src="{{ image.thumbnail|storage_url }}" alt="{{ image.title }}">
+    <img src="{{ 'gallery2:static/img/ajax-loader.gif'|static_url }}" data-src="{{ image.thumbnail|storage_url }}" alt="{{ image.title }}">
 </a>
 </div>
 {% endfor %}
