@@ -18,6 +18,7 @@ requires = [
     'pyramid_webassets',
     'pyramid_storage',
     'pyramid_redis_sessions',
+    'cssmin',
     'Pillow',
     'SQLAlchemy',
     'alembic',

@@ -13,6 +13,7 @@ coverage.xml
 *.hg
 *.sqlite
 *.ini
+*.webassets-cache
 env*/
 dist
 data

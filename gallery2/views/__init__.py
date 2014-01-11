@@ -2,6 +2,7 @@ from pyramid.view import view_config
 from sqlalchemy import func, not_
 
 from ..i18n import _
+from ..caching import region
 from .. import forms, models
 
 
@@ -32,9 +33,23 @@ def tags(request):
     ).filter(
         not_(models.Tag.name == None)
     ).group_by(models.Tag.name).order_by(
-        num_images.desc(),
         models.Tag.name
     ).having(num_images > 0)
+
+    return {'tags': tags}
+
+
+@view_config(route_name='tags',
+             xhr=True,
+             renderer='json')
+def tags_json(request):
+
+    def _get_tags():
+        return [result[0] for result in request.db.query(
+            models.Tag.name
+        ).order_by(models.Tag.name).all()]
+
+    tags = region.get_or_create('tags_json', _get_tags)
 
     return {'tags': tags}
 
