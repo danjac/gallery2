@@ -1,5 +1,4 @@
 from pyramid.view import view_config
-from sqlalchemy import func
 
 from ..i18n import _
 from .. import forms, models
@@ -31,8 +30,11 @@ def upload(request):
             form.image.data.file,
             request.storage,
         )
+        image.taglist = form.taglist.data
+
         request.db.add(image)
         request.db.flush()
+
         request.session.flash(
             request.localizer.translate(
                 _('Your image has been uploaded')), 'success')
@@ -48,6 +50,7 @@ def search(request):
         return {'images': []}
     q = '%' + q + '%'
     images = models.Image.query.filter(
-        models.Image.title.ilike(q)
+        models.Image.title.ilike(q) |
+        models.Image.tagstring.ilike(q)
     )
     return {'images': images}

@@ -14,9 +14,13 @@ def detail(image, request):
              renderer='edit.jinja2',
              permission='edit')
 def edit(image, request):
-    form = forms.EditForm(request, obj=image)
+    # not using obj due to taglist
+    form = forms.EditForm(request,
+                          title=image.title,
+                          taglist=image.tagstring)
     if form.handle():
         image.title = form.title.data
+        image.taglist = form.taglist.data
         request.session.flash(
             request.localizer.translate(
                 _('Your image has been updated')), 'success')

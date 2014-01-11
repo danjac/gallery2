@@ -17,6 +17,10 @@
 </div>
 </div>
 <p>
-    <small>Uploaded by <a href="{{ "profile"|route_url(image.user, slug=image.user.username) }}">{{ image.user }}</a> on {{ image.created_at|format_datetime }}</small>
+    <small>Uploaded by <a href="{{ "profile"|route_url(image.user, slug=image.user.username) }}">{{ image.user }}</a> on {{ image.created_at|format_datetime }} <a href="{{ image.image|storage_url }}" target="_blank">Download</a></small>
 </p>
+{% set tags = image.taglist %}
+{% if tags %}
+<p><small>Tags: {% for tag in tags %}<a href="">{{ tag }}</a> {% endfor %}</small></p>
+{% endif %}
 {% endblock %}

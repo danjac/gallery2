@@ -11,6 +11,8 @@ from .. import models
 def add_routes(config):
 
     config.add_route('home', '/')
+    config.add_route('search', '/search')
+    config.add_route('upload', '/upload')
 
     # Auth routes
 
@@ -19,9 +21,6 @@ def add_routes(config):
     config.add_route('signup', '/signup')
     config.add_route('forgotpass', '/forgotpass')
     config.add_route('changepass', '/changepass')
-
-    config.add_route('search', '/search')
-    config.add_route('upload', '/upload')
 
     config.add_model_route(models.User, 'profile', '/profile/{id}/{slug}')
 

@@ -16,9 +16,11 @@ except ImportError:
 from pyramid.security import Allow, Everyone, ALL_PERMISSIONS
 
 from sqlalchemy import (
+    Table,
     Column,
     ForeignKey,
     Unicode,
+    UnicodeText,
     String,
     Integer,
     Boolean,
@@ -28,6 +30,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.associationproxy import association_proxy
 
 
 from ..lib import crypt
@@ -105,8 +108,16 @@ class Image(Base):
     original_filename = Column(Unicode(200), nullable=False)
     image = Column(String(200), nullable=False)
     thumbnail = Column(String(200), nullable=False)
+    tagstring = Column(UnicodeText)
 
     user = relationship(User, backref='images')
+
+    tags_assoc = relationship('Tag', secondary=lambda: tagged_images,
+                              backref='images')
+
+    tags = association_proxy('tags_assoc', 'name',
+                             creator=lambda name:
+                             Tag.query.get_or_new(name))
 
     def __str__(self):
         return self.title
@@ -153,3 +164,41 @@ class Image(Base):
             output, 'output.jpg',
             folder=os.path.join('thumbs', date_prefix),
             randomize=True)
+
+    @hybrid_property
+    def taglist(self):
+        if not self.tagstring:
+            return ''
+        return self.tagstring.split()
+
+    @taglist.setter
+    def add_tags(self, tagstring):
+        self.tagstring = tagstring
+        self.tags.clear()
+        names = [n.lower() for n in tagstring.split()]
+        for name in names:
+            self.tags.append(name)
+
+
+class TagQuery(BaseQuery):
+
+    def get_or_new(self, name):
+        return self.filter_by(name=name).first() or Tag(name=name)
+
+
+class Tag(Base):
+    __tablename__ = "tags"
+
+    query = DBSession.query_property(TagQuery)
+
+    name = Column(Unicode(200), nullable=False, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+tagged_images = Table('tagged_images', Base.metadata,
+                      Column('image_id', Integer, ForeignKey(Image.id),
+                             primary_key=True),
+                      Column('tag_id', Integer, ForeignKey(Tag.id),
+                             primary_key=True))

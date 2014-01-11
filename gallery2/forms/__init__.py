@@ -24,6 +24,7 @@ from .validators import FileRequired
 class EditForm(SecureForm):
 
     title = StringField(_("Title"), [DataRequired()])
+    taglist = StringField(_("Tags"))
     submit = SubmitField(_("Save"))
 
 
@@ -31,6 +32,7 @@ class UploadForm(SecureForm):
 
     title = StringField(_("Title"), [DataRequired()])
     image = FileField(_("Image"), [FileRequired()])
+    taglist = StringField(_("Tags"))
     submit = SubmitField(_("Upload"))
 
     def validate_image(self, field):

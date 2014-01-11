@@ -23,3 +23,37 @@ def test_active(db):
     DBSession.add(User(email="test@gmail.com"))
     transaction.commit()
     assert User.query.active().count() == 1
+
+
+def test_add_tags(db):
+
+    from ..models import Image, Tag, DBSession
+    from .factories import UserFactory
+
+    image = Image(
+        user=UserFactory(),
+        title='test',
+        original_filename='test.jpg',
+        image='test.jpg',
+        thumbnail='test.jpg',
+    )
+    image.taglist = 'testing Development'
+    DBSession.flush()
+    assert Tag.query.count() == 2
+    assert image.taglist == ['testing', 'Development']
+    assert len(image.tags) == 2
+
+    # test uniqueness
+
+    image2 = Image(
+        user=image.user,
+        title='another test',
+        original_filename='test.jpg',
+        image='test.jpg',
+        thumbnail='test.jpg',
+    )
+    image2.taglist = 'testing again'
+    DBSession.flush()
+    assert Tag.query.count() == 3
+    assert image2.taglist == ['testing', 'again']
+    assert len(image2.tags) == 2
