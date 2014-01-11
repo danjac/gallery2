@@ -1,0 +1,13 @@
+{% extends "layout.jinja2" %}
+
+{% set active_tab="tags" %}
+
+{% block content %}
+<ul class="unstyled">
+{% cache "tags", 300 %}
+{% for tag, num_images in tags %}
+    <li><a href="{{ 'search'|route_url(_query={'q': tag}) }}">{{ tag }} ({{ num_images }})</a></li>
+{% endfor %}
+{% endcache %}
+</ul>
+{% endblock %}
