@@ -112,12 +112,17 @@ class Image(Base):
 
     user = relationship(User, backref='images')
 
-    tags_assoc = relationship('Tag', secondary=lambda: tagged_images,
-                              backref='images')
+    tags = relationship(
+        'Tag',
+        secondary=lambda: tagged_images,
+        backref='images'
+    )
 
-    tags = association_proxy('tags_assoc', 'name',
-                             creator=lambda name:
-                             Tag.query.get_or_new(name))
+    tags_proxy = association_proxy(
+        'tags', 'name',
+        creator=lambda name:
+        Tag.query.get_or_new(name)
+    )
 
     def __str__(self):
         return self.title
@@ -174,10 +179,10 @@ class Image(Base):
     @taglist.setter
     def add_tags(self, tagstring):
         self.tagstring = tagstring
-        self.tags.clear()
+        self.tags_proxy.clear()
         names = [n.lower() for n in tagstring.split()]
         for name in names:
-            self.tags.append(name)
+            self.tags_proxy.append(name)
 
 
 class TagQuery(BaseQuery):

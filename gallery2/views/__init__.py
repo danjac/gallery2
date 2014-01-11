@@ -27,12 +27,14 @@ def tags(request):
     tags = request.db.query(
         models.Tag.name,
         num_images,
-        ).outerjoin(
-        models.Image.tags_assoc
-        ).filter(not_(models.Tag.name == None)
-        ).group_by(models.Tag.name).order_by(
-            num_images.desc(),
-            models.Tag.name)
+    ).outerjoin(
+        models.Image.tags
+    ).filter(
+        not_(models.Tag.name == None)
+    ).group_by(models.Tag.name).order_by(
+        num_images.desc(),
+        models.Tag.name
+    ).having(num_images > 0)
 
     return {'tags': tags}
 

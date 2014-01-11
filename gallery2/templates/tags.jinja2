@@ -3,11 +3,17 @@
 {% set active_tab="tags" %}
 
 {% block content %}
-<ul class="unstyled">
+<div class="row">
 {% cache "tags", 300 %}
-{% for tag, num_images in tags %}
-    <li><a href="{{ 'search'|route_url(_query={'q': tag}) }}">{{ tag }} ({{ num_images }})</a></li>
+{% for column in tags|slice(4) %}
+<div class="col-md-3">
+    <ul class="list-unstyled">
+        {% for tag, num_images in column %}
+        <li><a href="{{ 'search'|route_url(_query={'q': tag}) }}">{{ tag }} ({{ num_images }})</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endfor %}
 {% endcache %}
-</ul>
+</div>
 {% endblock %}
