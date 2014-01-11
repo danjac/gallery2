@@ -15,7 +15,7 @@ def usage(argv):
     sys.exit(1)
 
 
-def handle_file(user, storage, filename):
+def handle_file(user, storage, filename, tags):
     if not storage.filename_allowed(filename):
         return
     title, _ = os.path.splitext(os.path.basename(filename))
@@ -23,6 +23,7 @@ def handle_file(user, storage, filename):
     with transaction.manager:
         image = models.Image(user=user, title=title)
         image.store_image(filename, file, storage)
+        image.taglist = " ".join(tags)
         models.DBSession.add(image)
         print(image.title + " added")
 
@@ -39,11 +40,15 @@ def main(argv=sys.argv):
         sys.exit(1)
 
     storage = env['request'].storage
+    folder_s = len(folder)
 
     for path, dirs, files in os.walk(folder):
         for filename in files:
+            tags = path[folder_s:].split(os.path.sep)
+            tags = [t.replace(" ", "").replace("-", "").replace("_", "") for
+                    t in tags if t]
             filename = os.path.join(path, filename)
             try:
-                handle_file(user, storage, filename)
+                handle_file(user, storage, filename, tags)
             except Exception as e:
                 print(e)

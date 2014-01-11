@@ -85,9 +85,12 @@ def search(request):
     q = request.params.get('q', '').strip()
     if not q:
         return {'images': []}
-    q = '%' + q + '%'
-    images = models.Image.query.filter(
-        models.Image.title.ilike(q) |
-        models.Image.tagstring.ilike(q)
-    )
+    causes = []
+    for param in set(q.split()[:6]):
+        param = '%' + param + '%'
+        causes.append((
+            models.Image.title.ilike(param) |
+            models.Image.tagstring.ilike(param)
+        ))
+    images = models.Image.query.filter(*causes)
     return {'images': images}
