@@ -12,6 +12,7 @@ def add_routes(config):
 
     config.add_route('home', '/')
     config.add_route('search', '/search')
+    config.add_route('tags', '/tags')
     config.add_route('upload', '/upload')
 
     # Auth routes

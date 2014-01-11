@@ -21,6 +21,6 @@
 </p>
 {% set tags = image.taglist %}
 {% if tags %}
-<p><small>Tags: {% for tag in tags %}<a href="">{{ tag }}</a> {% endfor %}</small></p>
+<p><small>Tags: {% for tag in tags %}<a href="{{ 'search'|route_url(_query={'q': tag }) }}">{{ tag }}</a> {% endfor %}</small></p>
 {% endif %}
 {% endblock %}

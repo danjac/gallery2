@@ -44,6 +44,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
+                <li{% if active_tab=='tags' %} class="active"{% endif %}><a href="{{ 'tags'|route_url }}">Tags</a></li>
               {% if 'upload'|has_permission %}
               <li{% if active_tab=='upload' %} class="active"{% endif %}><a href="{{ 'upload'|route_url }}">Upload</a></li>
               {% endif %}

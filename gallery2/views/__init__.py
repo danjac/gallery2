@@ -1,4 +1,5 @@
 from pyramid.view import view_config
+from sqlalchemy import func, not_
 
 from ..i18n import _
 from .. import forms, models
@@ -15,6 +16,25 @@ def home(request):
 def profile(user, request):
     images = models.Image.query.filter_by(user=user)
     return {'images': images}
+
+
+@view_config(route_name='tags',
+             renderer='tags.jinja2')
+def tags(request):
+
+    num_images = func.count(models.Image.id).label('num_images')
+
+    tags = request.db.query(
+        models.Tag.name,
+        num_images,
+        ).outerjoin(
+        models.Image.tags_assoc
+        ).filter(not_(models.Tag.name == None)
+        ).group_by(models.Tag.name).order_by(
+            num_images.desc(),
+            models.Tag.name)
+
+    return {'tags': tags}
 
 
 @view_config(route_name='upload',
