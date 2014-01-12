@@ -1,7 +1,7 @@
 from pyramid import testing
 
 from pyramid_mailer.mailer import DummyMailer
-from pyramid_storage.testing import DummyFileStorage
+from pyramid_storage.testing import DummyFileStorage as BaseDummyFileStorage
 
 
 from webob.multidict import MultiDict
@@ -21,6 +21,18 @@ class DummyRoute(object):
 
     def __init__(self, name):
         self.name = name
+
+
+class DummyFileStorage(BaseDummyFileStorage):
+
+    allow_files = True
+
+    def save_file(self, file, filename, *args, **kwargs):
+        self.saved.append(filename)
+        return filename
+
+    def filename_allowed(self, filename):
+        return self.allow_files
 
 
 def make_request(method='GET', post_data=None,

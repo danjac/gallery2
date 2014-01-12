@@ -4,7 +4,6 @@ $(function () {
     var thumbnails = $('.thumbnail');
 
     thumbnails.hide();
-    // check all thumbs, if 404 then remove
     $.each(thumbnails, function (index, el) {
         var $el = $(el),
             img = $el.find('img'),

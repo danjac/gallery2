@@ -29,7 +29,4 @@ def pytest_funcarg__db(request):
 
 
 def pytest_funcarg__app(request):
-
-    from .. import main
-    app = get_app('test.ini')
-    return TestApp(app)
+    return TestApp(get_app('test.ini'))

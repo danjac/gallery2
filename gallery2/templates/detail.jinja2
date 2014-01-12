@@ -1,6 +1,7 @@
 {% extends "layout.jinja2" %}
 {% block content %}
 <ul class="nav nav-pills pull-right">
+    <li><a href="{{ image.image|storage_url }}" target="_blank">Download</a></li>
     {% if 'edit'|has_permission(image) %}
     <li><a href="{{ 'edit'|route_url(image) }}">Edit</a></li>
     {% endif %}
@@ -10,17 +11,18 @@
 </ul>
 <h2>{{ image.title }}</h2>
 <div class="row">
-<div class="thumbnail col-md-4">
+<div class="col-md-6">
 <a data-lightbox="{{ image.id }}" title="{{ image.title }}" href="{{ image.image|storage_url }}">
     <img src="{{ image.thumbnail|storage_url }}">
 </a>
 </div>
+<div class="col-md-6">
+    Uploaded by <a href="{{ "profile"|route_url(image.user, slug=image.user.username) }}">{{ image.user }}</a> 
+    on <b>{{ image.created_at|format_date }}</b>
+    {% set tags = image.taglist %}
+    {% if tags %}
+    <br>Tags: {% for tag in tags %}<a href="{{ 'search'|route_url(_query={'q': tag }) }}">{{ tag }}</a> {% endfor %}
+    {% endif %}
 </div>
-<p>
-    <small>Uploaded by <a href="{{ "profile"|route_url(image.user, slug=image.user.username) }}">{{ image.user }}</a> on {{ image.created_at|format_datetime }} <a href="{{ image.image|storage_url }}" target="_blank">Download</a></small>
-</p>
-{% set tags = image.taglist %}
-{% if tags %}
-<p><small>Tags: {% for tag in tags %}<a href="{{ 'search'|route_url(_query={'q': tag }) }}">{{ tag }}</a> {% endfor %}</small></p>
-{% endif %}
+</div>
 {% endblock %}
