@@ -3,9 +3,11 @@ import pyramid_jinja2
 from webassets import Bundle
 
 
-js = Bundle('js/*.js',
-            filters='uglifyjs',
-            output='js/gallery2.min.js')
+js = Bundle(
+    Bundle('js/*.js'),
+    Bundle('coffee/*.coffee', filters='coffeescript'),
+    filters='uglifyjs',
+    output='js/gallery2.min.js')
 
 
 css = Bundle('css/*.css',
