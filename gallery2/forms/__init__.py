@@ -21,6 +21,9 @@ from .base import SecureForm
 from .validators import FileRequired
 
 
+MIN_PASSWORD_LENGTH = 6
+
+
 class EditForm(SecureForm):
 
     title = StringField(_("Title"), [DataRequired()])
@@ -57,7 +60,12 @@ class SignupForm(SecureForm):
         Email(),
         Unique(User.email),
     ])
-    password = PasswordField(_("Password"), [DataRequired(), Length(min=6)])
+    password = PasswordField(
+        _("Password"), [
+            DataRequired(),
+            Length(min=MIN_PASSWORD_LENGTH)
+        ]
+    )
     password_confirm = PasswordField(
         _("Password confirm"),
         [EqualTo('password')]
@@ -71,6 +79,14 @@ class ForgotPasswordForm(SecureForm):
 
 
 class ChangePasswordForm(SecureForm):
-    password = PasswordField("Password", [DataRequired(), Length(min=6)])
-    password_confirm = PasswordField("Password confirm", [EqualTo('password')])
+    password = PasswordField(
+        _("Password"), [
+            DataRequired(),
+            Length(min=MIN_PASSWORD_LENGTH)
+        ]
+    )
+    password_confirm = PasswordField(
+        _("Password confirm"),
+        [EqualTo('password')]
+    )
     submit = SubmitField("Signup")
