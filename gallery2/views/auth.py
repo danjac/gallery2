@@ -62,7 +62,7 @@ def forgot_password(request):
     if form.handle():
         user = models.User.query.identify(form.identifier.data)
         if user:
-            user.renew_verification_code()
+            user.reset_verification_code()
             request.session.flash(
                 request.localizer.translate(
                     _('Check your email for your verification code')),

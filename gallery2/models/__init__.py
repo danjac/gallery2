@@ -87,7 +87,7 @@ class User(Base):
     def check_password(self, password):
         return crypt.check_password(password, self.password)
 
-    def renew_verification_code(self):
+    def reset_verification_code(self):
         code = "".join(
             random.sample(
                 string.ascii_letters +

@@ -13,7 +13,7 @@ $ ->
       .fail ->
         el.remove()
 
-  $('input.tags').autocomplete(
+  $('input.tags').autocomplete
      source: (req, res) ->
 
        $.get '/tags', (data) ->
@@ -29,4 +29,3 @@ $ ->
          
      select: (event, ui) ->
        window.document.location.href = "/search?q=#{ui.item.value}"
-  )

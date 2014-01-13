@@ -1,6 +1,14 @@
 import transaction
 
 
+# User tests
+
+
+def test_reset_verification_code():
+    from ..models import User
+    assert User().reset_verification_code not in (None, '')
+
+
 def test_check_good_password():
     from ..models import User
     u = User(password="testpass")
@@ -23,6 +31,9 @@ def test_active(db):
     DBSession.add(User(email="test@gmail.com"))
     transaction.commit()
     assert User.query.active().count() == 1
+
+
+# Image tests
 
 
 def test_add_tags(db):
