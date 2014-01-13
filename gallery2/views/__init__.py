@@ -1,3 +1,4 @@
+import os
 from pyramid.view import view_config
 from sqlalchemy import func, not_
 
@@ -59,9 +60,21 @@ def tags_json(request):
              renderer='upload.jinja2')
 def upload(request):
     form = forms.UploadForm(request)
+
     if form.handle():
+
+        title = form.title.data
+        if not title:
+            title, ext = os.path.splitext(
+                os.path.basename(
+                    form.image.data.filename
+                )
+            )
+            for c in ("-", "_", "."):
+                title = title.replace(c, " ")
+
         image = models.Image(user=request.user,
-                             title=form.title.data)
+                             title=title)
         image.store_image(
             form.image.data.filename,
             form.image.data.file,

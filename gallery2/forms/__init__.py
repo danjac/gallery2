@@ -30,7 +30,7 @@ class EditForm(SecureForm):
 
 class UploadForm(SecureForm):
 
-    title = StringField(_("Title"), [DataRequired()])
+    title = StringField(_("Title"))
     image = FileField(_("Image"), [FileRequired()])
     taglist = StringField(_("Tags"))
     submit = SubmitField(_("Upload"))
