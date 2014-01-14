@@ -21,7 +21,7 @@ def login(request):
                 _('Welcome back, ${name}', mapping={'name': user.username}))
             headers = remember(request, user.id)
             return request.seeother('home', headers=headers)
-        request.session.flash('Sorry, invalid login', 'warning')
+        request.messages.warning(_('Sorry, invalid login'))
     return {'form': form}
 
 
