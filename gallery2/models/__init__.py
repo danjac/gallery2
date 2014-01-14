@@ -13,7 +13,7 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-from pyramid.security import Allow, Everyone, ALL_PERMISSIONS
+from pyramid.security import Allow, Everyone, Authenticated, ALL_PERMISSIONS
 
 from sqlalchemy import (
     Table,
@@ -131,6 +131,7 @@ class Image(Base):
     def __acl__(self):
         return [
             (Allow, Everyone, "view"),
+            (Allow, Authenticated, "add_comment"),
             (Allow, "user:%d" % self.user_id, ALL_PERMISSIONS),
         ]
 
@@ -183,6 +184,26 @@ class Image(Base):
         names = [n.lower() for n in tagstring.split()]
         for name in names:
             self.tags_proxy.append(name)
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    image_id = Column(Integer, ForeignKey(Image.id), nullable=False)
+    author_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    comment = Column(UnicodeText, nullable=False)
+
+    author = relationship(
+        User,
+        backref='comments',
+        lazy='joined',
+        innerjoin=True
+    )
+    image = relationship(Image, backref='comments')
+
+    @declared_attr
+    def __mapper_args__(cls):
+        return {'order_by': cls.__table__.c.created_at.asc()}
 
 
 class TagQuery(BaseQuery):

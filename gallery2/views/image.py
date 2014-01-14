@@ -7,7 +7,9 @@ from .. import models, forms
 @view_config(route_name='detail',
              renderer='detail.jinja2')
 def detail(image, request):
-    return {'image': image}
+    form = forms.CommentForm(
+        request, action=request.route_url('add_comment', image))
+    return {'image': image, 'comment_form': form}
 
 
 @view_config(route_name='edit',
@@ -49,4 +51,4 @@ def add_comment(image, request):
 
         request.messages.success(_('Thanks for your comment'))
         return request.seeother('detail', image)
-    return {'form': form, 'image': image}
+    return {'comment_form': form, 'image': image}

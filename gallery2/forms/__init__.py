@@ -1,5 +1,6 @@
 from wtforms import (
     StringField,
+    TextAreaField,
     FileField,
     PasswordField,
     SubmitField,
@@ -22,6 +23,12 @@ from .validators import FileRequired
 
 
 MIN_PASSWORD_LENGTH = 6
+
+
+class CommentForm(SecureForm):
+
+    comment = TextAreaField(_("Add your comment"), [DataRequired()])
+    submit = SubmitField(_("Add comment"))
 
 
 class EditForm(SecureForm):
