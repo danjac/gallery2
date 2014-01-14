@@ -101,7 +101,8 @@ def search(request):
         param = '%' + param + '%'
         causes.append((
             models.Image.title.ilike(param) |
-            models.Image.tagstring.ilike(param)
+            models.Image.tagstring.ilike(param) |
+            models.User.username.ilike(param)
         ))
-    images = models.Image.query.filter(*causes)
+    images = models.Image.query.filter(*causes).join(models.User)
     return {'images': images}

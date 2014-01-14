@@ -24,7 +24,6 @@ requires = [
     'alembic',
     'dogpile.cache',
     'WTForms==2.0dev',
-    'wtforms_alchemy',
     'schedule',
     'bcrypt',
     'pytest',

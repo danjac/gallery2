@@ -15,9 +15,9 @@ from wtforms.validators import (
     Length,
 )
 
-from wtforms_alchemy import Unique
+from wtforms.ext.sqlalchemy.validators import Unique
 
-from ..models import User
+from .. import models
 from ..i18n import _
 from .base import SecureForm
 from .validators import FileRequired
@@ -63,11 +63,11 @@ class LoginForm(SecureForm):
 class SignupForm(SecureForm):
     username = StringField(_("Username"), [
         DataRequired(),
-        Unique(User.username),
+        Unique(models.DBSession, models.User, models.User.username),
     ])
     email = StringField(_("Email address"), [
         Email(),
-        Unique(User.email),
+        Unique(models.DBSession, models.User, models.User.email),
     ])
     password = PasswordField(
         _("Password"), [
