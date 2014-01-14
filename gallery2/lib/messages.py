@@ -11,6 +11,6 @@ class Messages(object):
         self.warning = functools.partial(self.flash, queue='warning')
         self.danger = functools.partial(self.flash, queue='danger')
 
-    def flash(self, message, queue='', **mapping):
+    def flash(self, message, queue=''):
         message = self.request.localizer.translate(message)
         return self.request.session.flash(message, queue)
