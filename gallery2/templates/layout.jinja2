@@ -57,7 +57,7 @@
             <li><a href="{{ 'profile'|route_url(request.user, slug=request.user.username) }}">{{ request.user.username }}</a></li>
             <li><a href="{{ 'logout'|route_url }}">Logout</a></li>
             {% else %}
-            <li{% if active_tab=='login' %} class="active"{% endif %}><a href="{{ 'login'|route_url }}">Login</a></li>
+            <li{% if active_tab=='login' %} class="active"{% endif %}><a href="{{ login_url }}">Login</a></li>
             <li{% if active_tab=='signup' %} class="active"{% endif %}><a href="{{ 'signup'|route_url }}">Signup</a></li>
             {% endif %}
           </ul>

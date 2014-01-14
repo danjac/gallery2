@@ -34,6 +34,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 
 from ..lib import crypt
+from ..security import Admins
 from .base import DBSession, Base, BaseQuery
 
 
@@ -132,6 +133,7 @@ class Image(Base):
         return [
             (Allow, Everyone, "view"),
             (Allow, Authenticated, "add_comment"),
+            (Allow, Admins, ALL_PERMISSIONS),
             (Allow, "user:%d" % self.user_id, ALL_PERMISSIONS),
         ]
 
@@ -199,11 +201,24 @@ class Comment(Base):
         lazy='joined',
         innerjoin=True
     )
-    image = relationship(Image, backref='comments')
+    image = relationship(
+        Image,
+        backref='comments',
+        lazy='joined',
+        innerjoin=True
+    )
 
     @declared_attr
     def __mapper_args__(cls):
         return {'order_by': cls.__table__.c.created_at.asc()}
+
+    @property
+    def __acl__(self):
+        return [
+            (Allow, Admins, ALL_PERMISSIONS),
+            (Allow, "user:%d" % self.author_id, ALL_PERMISSIONS),
+            (Allow, "user:%d" % self.image.user_id, ALL_PERMISSIONS),
+        ]
 
 
 class TagQuery(BaseQuery):

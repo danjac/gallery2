@@ -31,6 +31,10 @@ def add_routes(config):
         r('delete', '/images/{id}/delete')
         r('add_comment', '/images/{id}/add_comment')
 
+    config.add_model_route(models.Comment,
+                           'delete_comment',
+                           '/comments/{id}/delete')
+
 
 def includeme(config):
 

@@ -32,12 +32,21 @@
 <h3>Comments</h3>
 {% for comment in image.comments %}
 <div class="well">
+    {% if 'delete'|has_permission(comment) %}
+    <ul class="nav nav-pills pull-right">
+        <li><a onclick="return confirm('You want to remove this comment?');" href="{{ 'delete_comment'|route_url(comment) }}">Delete</a></li>
+    </ul>
+    {% endif %}
     <p>{{ comment.comment }}</p>
     <small>by <a href="{{ 'profile'|route_url(comment.author, slug=comment.author.username) }}">{{ comment.author.username }}</a> on {{ comment.created_at|format_datetime }}</small>
 </div>
 {% else %}
 No comments
 {% endfor %}
+{% if 'add_comment'|has_permission(image) %}
 <hr>
 {{ render_form(comment_form) }}
+{% else %}
+<a href="{{ login_url }}">You must log in to comment.</a>
+{% endif %}
 {% endblock %}

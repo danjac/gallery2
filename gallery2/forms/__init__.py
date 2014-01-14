@@ -1,6 +1,7 @@
 from wtforms import (
     StringField,
     TextAreaField,
+    HiddenField,
     FileField,
     PasswordField,
     SubmitField,
@@ -55,6 +56,7 @@ class LoginForm(SecureForm):
 
     identifier = StringField(_("Email or username"), [DataRequired()])
     password = PasswordField(_("Password"), [DataRequired()])
+    redirect = HiddenField()
     submit = SubmitField(_("Login"))
 
 

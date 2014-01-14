@@ -1,5 +1,6 @@
 from pyramid.view import view_config
 from pyramid.exceptions import NotFound
+from pyramid.httpexceptions import HTTPSeeOther
 from pyramid.security import NO_PERMISSION_REQUIRED, remember, forget
 
 from ..i18n import _
@@ -10,7 +11,7 @@ from .. import models, forms, mailers
              permission=NO_PERMISSION_REQUIRED,
              renderer='login.jinja2')
 def login(request):
-    form = forms.LoginForm(request)
+    form = forms.LoginForm(request, redirect=request.params.get('redirect'))
     if form.handle():
         user = models.User.query.authenticate(
             form.identifier.data,
@@ -20,7 +21,10 @@ def login(request):
             request.messages.success(
                 _('Welcome back, ${name}', mapping={'name': user.username}))
             headers = remember(request, user.id)
-            return request.seeother('home', headers=headers)
+            redirect = form.redirect.data
+            if not redirect or not redirect.startswith(request.host_url):
+                redirect = request.route_url('home')
+            return HTTPSeeOther(redirect, headers=headers)
         request.messages.warning(_('Sorry, invalid login'))
     return {'form': form}
 
