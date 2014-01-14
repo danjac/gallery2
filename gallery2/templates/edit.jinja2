@@ -6,10 +6,10 @@
 {{ breadcrumbs(( 'detail'|route_url(image), image.title), 'Edit') }}
 <div class="row">
 <div class="col-md-6">
-{{ render_form(form) }}
+    <img class="img-portrait" src="{{ image.thumbnail|storage_url }}">
 </div>
 <div class="col-md-6">
-    <img class="img-portrait" src="{{ image.thumbnail|storage_url }}">
+    {{ render_form(form) }}
 </div>
 </div>
 {% endblock %}

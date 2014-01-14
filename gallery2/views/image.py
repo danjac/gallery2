@@ -1,7 +1,7 @@
 from pyramid.view import view_config
 
 from ..i18n import _
-from .. import forms
+from .. import models, forms
 
 
 @view_config(route_name='detail',
@@ -21,9 +21,7 @@ def edit(image, request):
     if form.handle():
         image.title = form.title.data
         image.taglist = form.taglist.data
-        request.session.flash(
-            request.localizer.translate(
-                _('Your image has been updated')), 'success')
+        request.messages.success(_('Your image has been updated'))
         return request.seeother('detail', image)
     return {'image': image, 'form': form}
 
@@ -34,7 +32,21 @@ def delete(image, request):
     request.db.delete(image)
     request.storage.delete(image.image)
     request.storage.delete(image.thumbnail)
-    request.session.flash(
-        request.localizer.translate(
-            _('Your image has been deleted')), 'danger')
+    request.messages.danger(_('Your image has been deleted'))
     return request.seeother('home')
+
+
+@view_config(route_name='add_comment',
+             renderer='detail.jinja2',
+             request_method='POST',
+             permission='add_comment')
+def add_comment(image, request):
+    form = forms.CommentForm(request)
+    if form.handle():
+        models.Comment(author=request.user,
+                       image=image,
+                       comment=form.comment.data)
+
+        request.messages.success(_('Thanks for your comment'))
+        return request.seeother('detail', image)
+    return {'form': form, 'image': image}

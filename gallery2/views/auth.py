@@ -17,11 +17,8 @@ def login(request):
             form.password.data,
         )
         if user:
-            request.session.flash(
-                request.localizer.translate(
-                    _('Welcome back, ${name}', mapping={
-                        'name': user.username,
-                    })),  'success')
+            request.messages.success(
+                _('Welcome back, ${name}', mapping={'name': user.username}))
             headers = remember(request, user.id)
             return request.seeother('home', headers=headers)
         request.session.flash('Sorry, invalid login', 'warning')
@@ -43,11 +40,8 @@ def signup(request):
         form.populate_obj(user)
         request.db.add(user)
         request.db.flush()
-        request.session.flash(
-            request.localizer.translate(
-                _('Welcome, ${name}', mapping={
-                    'name': user.username,
-                })),  'success')
+        request.messages.success(
+            _('Welcome, ${name}', mapping={'name': user.username}))
         headers = remember(request, user.id)
         return request.seeother('home', headers=headers)
     return {'form': form}
@@ -63,10 +57,8 @@ def forgot_password(request):
         user = models.User.query.identify(form.identifier.data)
         if user:
             user.reset_verification_code()
-            request.session.flash(
-                request.localizer.translate(
-                    _('Check your email for your verification code')),
-                'success')
+            request.messages.success(
+                _('Check your email for your verification code'))
             request.mailer.send(mailers.forgot_password(request, user))
             return request.seeother('home')
         form.email.errors.append('No user found for this address')
@@ -94,10 +86,8 @@ def change_password(request):
     if form.handle():
         user.password = form.password.data
         user.verification_code = None
-        request.session.flash(
-            request.localizer.translate(
-                _('Please login again to verify your new password')),
-            'success')
+        request.messages.success(
+            _('Please login again to verify your new password'))
         headers = forget(request)
         return request.seeother('login', headers=headers)
     return {'form': form}

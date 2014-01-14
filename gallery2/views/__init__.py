@@ -85,9 +85,7 @@ def upload(request):
         request.db.add(image)
         request.db.flush()
 
-        request.session.flash(
-            request.localizer.translate(
-                _('Your image has been uploaded')), 'success')
+        request.messages.success(_('Your image has been uploaded'))
         return request.seeother('detail', image)
     return {'form': form}
 

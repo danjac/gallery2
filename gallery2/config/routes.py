@@ -29,6 +29,7 @@ def add_routes(config):
         r('detail', '/images/{id}')
         r('edit', '/images/{id}/edit')
         r('delete', '/images/{id}/delete')
+        r('add_comment', '/images/{id}/add_comment')
 
 
 def includeme(config):

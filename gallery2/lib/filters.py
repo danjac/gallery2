@@ -1,5 +1,6 @@
 import json
 import jinja2
+import PIL
 
 from babel import dates, numbers
 
@@ -59,3 +60,9 @@ def jsonify(context, value):
     if hasattr(value, '__json__'):
         value = value.__json__(context['request'])
     return jinja2.Markup(json.dumps(value))
+
+
+@jinja2.contextfilter
+def image_size(context, value):
+    image = PIL.Image.open(context['request'].storage.path(value))
+    return image.size

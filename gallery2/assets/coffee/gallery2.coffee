@@ -13,6 +13,8 @@ $ ->
       .fail ->
         el.remove()
 
+  $('a.thumbnail').tooltip()
+
   $('input.tags').autocomplete
      source: (req, res) ->
 

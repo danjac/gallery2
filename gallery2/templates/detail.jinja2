@@ -19,6 +19,8 @@
 <div class="col-md-6">
     Uploaded by <a href="{{ "profile"|route_url(image.user, slug=image.user.username) }}">{{ image.user }}</a> 
     on <b>{{ image.created_at|format_date }}</b>
+    <br> Original filename: <b>{{ image.original_filename }}</b>
+    <br> Full size: {% set width, height=image.image|image_size %} <b>{{ width }} x {{ height }}</b>
     {% set tags = image.taglist %}
     {% if tags %}
     <br>Tags: {% for tag in tags %}<a href="{{ 'search'|route_url(_query={'q': tag }) }}">{{ tag }}</a> {% endfor %}

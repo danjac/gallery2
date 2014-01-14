@@ -18,6 +18,7 @@ def includeme(config):
     env.filters['plural'] = plural
     env.filters['jsonify'] = filters.jsonify
     env.filters['storage_url'] = filters.storage_url
+    env.filters['image_size'] = filters.image_size
     env.filters['has_permission'] = filters.has_permission
     env.filters['paginate'] = filters.paginate
     env.filters['format_date'] = filters.format_date

@@ -33,8 +33,7 @@ class Form(BaseForm):
             if self.validate():
                 return True
             if not self.request.is_xhr:
-                self.request.session.flash(
-                    _('Your form contains errors'), 'warning')
+                self.request.messages.warning(_('Your form contains errors'))
             self.request.response.status_int = 400
         return False
 
