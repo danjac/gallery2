@@ -24,7 +24,6 @@ requires = [
     'alembic',
     'dogpile.cache',
     'WTForms==2.0dev',
-    'schedule',
     'bcrypt',
     'pytest',
     'factory_boy',
@@ -69,7 +68,6 @@ setup(name='gallery2',
       main = gallery2:main
       [console_scripts]
       initialize_gallery2_db = gallery2.scripts.initializedb:main
-      run_gallery2_crons = gallery2.scripts.crons:main
       import_gallery2_folder = gallery2.scripts.import_folder:main
       """,
       )
