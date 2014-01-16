@@ -5,7 +5,7 @@ from .. import models, forms
 
 
 @view_config(route_name='detail',
-             renderer='detail.jinja2')
+             renderer='detail.mako')
 def detail(image, request):
     form = forms.CommentForm(
         request, action=request.route_url('add_comment', image))
@@ -13,7 +13,7 @@ def detail(image, request):
 
 
 @view_config(route_name='edit',
-             renderer='edit.jinja2',
+             renderer='edit.mako',
              permission='edit')
 def edit(image, request):
     # not using obj due to taglist
@@ -39,7 +39,7 @@ def delete(image, request):
 
 
 @view_config(route_name='add_comment',
-             renderer='detail.jinja2',
+             renderer='detail.mako',
              request_method='POST',
              permission='add_comment')
 def add_comment(image, request):

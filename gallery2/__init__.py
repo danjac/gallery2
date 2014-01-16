@@ -15,7 +15,6 @@ def main(global_config, **settings):
     config.include('.config.db')
     config.include('.config.auth')
     config.include('.config.routes')
-    config.include('.config.renderers')
     config.include('.config.mail')
     config.include('.config.caching')
     config.include('.config.assets')

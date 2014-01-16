@@ -201,6 +201,7 @@ class Comment(Base):
         lazy='joined',
         innerjoin=True
     )
+
     image = relationship(
         Image,
         backref='comments',

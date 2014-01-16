@@ -8,20 +8,20 @@ from .. import forms, models
 
 
 @view_config(route_name='home',
-             renderer='thumbs.jinja2')
+             renderer='thumbs.mako')
 def home(request):
     return {'images': models.Image.query}
 
 
 @view_config(route_name='profile',
-             renderer='thumbs.jinja2')
+             renderer='thumbs.mako')
 def profile(user, request):
     images = models.Image.query.filter_by(user=user)
     return {'images': images}
 
 
 @view_config(route_name='tags',
-             renderer='tags.jinja2')
+             renderer='tags.mako')
 def tags(request):
 
     num_images = func.count(models.Image.id).label('num_images')
@@ -57,7 +57,7 @@ def tags_json(request):
 
 @view_config(route_name='upload',
              permission='upload',
-             renderer='upload.jinja2')
+             renderer='upload.mako')
 def upload(request):
     form = forms.UploadForm(request)
 
@@ -91,7 +91,7 @@ def upload(request):
 
 
 @view_config(route_name='search',
-             renderer='thumbs.jinja2')
+             renderer='thumbs.mako')
 def search(request):
     q = request.params.get('q', '').strip()
     if not q:

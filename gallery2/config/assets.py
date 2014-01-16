@@ -1,5 +1,3 @@
-import pyramid_jinja2
-
 from webassets import Bundle
 
 
@@ -23,7 +21,3 @@ def includeme(config):
     assets_dir = config.registry.settings.get('webassets.assets_dir')
     if assets_dir:
         env.append_path(assets_dir)
-
-    config.add_jinja2_extension('webassets.ext.jinja2.AssetsExtension')
-    jinja2_env = pyramid_jinja2.get_jinja2_environment(config)
-    jinja2_env.assets_environment = env

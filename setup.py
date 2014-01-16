@@ -13,7 +13,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_tm',
     'pyramid_mailer==0.13',
-    'pyramid_jinja2',
+    'pyramid_mako',
     'pyramid_exclog',
     'pyramid_webassets',
     'pyramid_storage',

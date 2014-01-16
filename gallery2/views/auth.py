@@ -9,7 +9,7 @@ from .. import models, forms, mailers
 
 @view_config(route_name='login',
              permission=NO_PERMISSION_REQUIRED,
-             renderer='login.jinja2')
+             renderer='login.mako')
 def login(request):
     form = forms.LoginForm(request, redirect=request.params.get('redirect'))
     if form.handle():
@@ -36,7 +36,7 @@ def logout(request):
 
 @view_config(route_name='signup',
              permission=NO_PERMISSION_REQUIRED,
-             renderer='signup.jinja2')
+             renderer='signup.mako')
 def signup(request):
     form = forms.SignupForm(request)
     if form.handle():
@@ -53,7 +53,7 @@ def signup(request):
 
 @view_config(route_name='forgotpass',
              permission=NO_PERMISSION_REQUIRED,
-             renderer='forgot_password.jinja2')
+             renderer='forgot_password.mako')
 def forgot_password(request):
 
     form = forms.ForgotPasswordForm(request)
@@ -71,7 +71,7 @@ def forgot_password(request):
 
 @view_config(route_name='changepass',
              permission=NO_PERMISSION_REQUIRED,
-             renderer='change_password.jinja2')
+             renderer='change_password.mako')
 def change_password(request):
 
     user = request.user
